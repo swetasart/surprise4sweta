@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine? 💕</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff0066;
+            --secondary: #ff3385;
+            --accent: #cc0052;
+            --dark: #0a0a0a;
+            --dark-card: #1a1a1a;
+            --dark-lighter: #2a2a2a;
+            --light: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: radial-gradient(ellipse at top, #1a0a1f 0%, #0a0a0a 50%, #000000 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 102, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Floating hearts background */
+        .hearts-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .heart-float {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.2;
+            animation: float-up 15s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 102, 0.5));
+        }
+
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.2;
+            }
+            90% {
+                opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 90%;
+            max-width: 600px;
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            text-align: center;
+            border: 1px solid rgba(255, 0, 102, 0.2);
+        }
+
+        .screen {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--light);
+            margin-bottom: 20px;
+            font-weight: 900;
+            text-shadow: 0 0 30px rgba(255, 0, 102, 0.5);
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--light);
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255, 0, 102, 0.3);
+            border-radius: 15px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: 'Crimson Pro', serif;
+            background: var(--dark-lighter);
+            color: var(--light);
+        }
+
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 0, 102, 0.2);
+            background: var(--dark-card);
+        }
+
+        input[type="password"]::placeholder,
+        input[type="text"]::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-family: 'Crimson Pro', serif;
+            font-weight: 600;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 0, 102, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 0, 102, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Quiz styles */
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .option {
+            padding: 20px;
+            background: var(--dark-lighter);
+            border: 2px solid rgba(255, 0, 102, 0.3);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            color: var(--light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 102, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option:hover {
+            background: var(--dark-card);
+            border-color: var(--primary);
+            transform: translateX(10px);
+            box-shadow: 0 0 20px rgba(255, 0, 102, 0.3);
+        }
+
+        .option.correct {
+            background: linear-gradient(135deg, #4ade80, #22c55e);
+            border-color: #16a34a;
+            color: white;
+            animation: pulse 0.6s ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .question-counter {
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .response-message {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.4s ease-out;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .response-message.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .response-message.mirror {
+            background: linear-gradient(135deg, #fb923c, #f97316);
+            color: white;
+            animation: shake 0.5s;
+            box-shadow: 0 10px 30px rgba(251, 146, 60, 0.4);
+        }
+
+        .response-message.nope {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            animation: shake 0.5s;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4);
+        }
+
+        .response-message.correct {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            animation: bounce 0.6s;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .hearts-burst {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .heart-particle {
+            position: absolute;
+            font-size: 24px;
+            animation: burstOut 1s ease-out forwards;
+        }
+
+        @keyframes burstOut {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Ring Hunt Game */
+        .ring-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .box {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, var(--dark-lighter), var(--dark-card));
+            border: 3px solid rgba(255, 0, 102, 0.4);
+            border-radius: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .box::before {
+            content: '🎁';
+            position: absolute;
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 102, 0.5));
+        }
+
+        .box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 102, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .box:hover::after {
+            left: 100%;
+        }
+
+        .box.revealed {
+            background: var(--dark-card);
+            cursor: default;
+            transform: rotateY(180deg);
+            border-color: var(--primary);
+        }
+
+        .box.revealed::before {
+            content: '';
+        }
+
+        .box:not(.revealed):hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(255, 0, 102, 0.4);
+            border-color: var(--primary);
+        }
+
+        .rings-found {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Valentine Question */
+        .valentine-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-no {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+            color: white;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        /* Final Screen */
+        .final-gif {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            margin: 30px auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(255, 0, 102, 0.3);
+        }
+
+        .romantic-text {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-style: italic;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            color: var(--primary);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            h2 {
+                font-size: 1.6rem;
+            }
+
+            .ring-grid {
+                gap: 10px;
+            }
+
+            .box {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="heartsBackground"></div>
+
+    <div class="container">
+        <!-- Screen 1: Secret Password -->
+        <div class="screen active" id="secretScreen">
+            <h1>💕 Secret Love 💕</h1>
+            <p>Enter the secret password to unlock something special...</p>
+            <input type="password" id="secretInput" placeholder="What's the secret?">
+            <p class="error-message" id="secretError">Oops! That's not quite right...</p>
+            <button class="btn" onclick="checkSecret()">Unlock My Heart</button>
+        </div>
+
+        <!-- Screen 2: Truth Test Quiz -->
+        <div class="screen" id="quizScreen">
+            <h2>💝 The Truth Test 💝</h2>
+            <p class="question-counter" id="questionCounter">Question 1 of 3</p>
+            <p id="questionText"></p>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="response-message" id="responseMessage"></div>
+        </div>
+
+        <!-- Screen 3: Ring Hunt Game -->
+        <div class="screen" id="ringHuntScreen">
+            <h2>💍 Find the Rings 💍</h2>
+            <p>Find all 3 hidden rings to continue!</p>
+            <div class="ring-grid" id="ringGrid"></div>
+            <p class="rings-found" id="ringsFound">Rings Found: 0/3</p>
+        </div>
+
+        <!-- Screen 4: Valentine Question -->
+        <div class="screen" id="valentineScreen">
+            <h1 id="valentineTitle">💖 The Big Question 💖</h1>
+            <h2 id="valentineQuestion">Will you be my Valentine?</h2>
+            <div class="valentine-buttons">
+                <button class="btn btn-yes" onclick="handleYes()">Yes! 💕</button>
+                <button class="btn btn-no" id="noButton" onclick="handleNo()">No</button>
+            </div>
+        </div>
+
+        <!-- Screen 5: Final Screen -->
+        <div class="screen" id="finalScreen">
+            <h1>🎉 Yay! 🎉</h1>
+            <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Cute cats kissing" class="final-gif">
+            <p class="romantic-text">
+                "In a world full of chaos, you are my peace.<br>
+                In a life full of moments, you are my favorite.<br>
+                Happy Valentine's Day, my love! 💕"
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Sound Effects
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            switch(type) {
+                case 'click':
+                    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(600, audioContext.currentTime + 0.1);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.1);
+                    break;
+                    
+                case 'correct':
+                    // Upward arpeggio
+                    const notes = [523.25, 659.25, 783.99]; // C, E, G
+                    notes.forEach((freq, i) => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+                        osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.1);
+                        gain.gain.setValueAtTime(0.2, audioContext.currentTime + i * 0.1);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.3);
+                        osc.start(audioContext.currentTime + i * 0.1);
+                        osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
+                    });
+                    return;
+                    
+                case 'wrong':
+                    oscillator.frequency.setValueAtTime(300, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.2);
+                    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.2);
+                    break;
+                    
+                case 'ring':
+                    oscillator.frequency.setValueAtTime(1200, audioContext.currentTime);
+                    oscillator.frequency.exponentialRampToValueAtTime(1600, audioContext.currentTime + 0.15);
+                    gainNode.gain.setValueAtTime(0.25, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.15);
+                    break;
+                    
+                case 'success':
+                    // Victory jingle
+                    const victoryNotes = [523.25, 587.33, 659.25, 783.99, 1046.50]; // C, D, E, G, C
+                    victoryNotes.forEach((freq, i) => {
+                        const osc = audioContext.createOscillator();
+                        const gain = audioContext.createGain();
+                        osc.connect(gain);
+                        gain.connect(audioContext.destination);
+                        osc.frequency.setValueAtTime(freq, audioContext.currentTime + i * 0.1);
+                        gain.gain.setValueAtTime(0.2, audioContext.currentTime + i * 0.1);
+                        gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + i * 0.1 + 0.3);
+                        osc.start(audioContext.currentTime + i * 0.1);
+                        osc.stop(audioContext.currentTime + i * 0.1 + 0.3);
+                    });
+                    return;
+            }
+        }
+
+        // Create floating hearts background
+        function createFloatingHearts() {
+            const heartsContainer = document.getElementById('heartsBackground');
+            const hearts = ['❤️', '💕', '💖', '💗', '💝', '💞'];
+            
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-float';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 15 + 's';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        createFloatingHearts();
+
+        // Secret password check
+        const SECRET_PASSWORD = "love"; // Change this to your desired password
+
+        function checkSecret() {
+            const input = document.getElementById('secretInput').value.toLowerCase();
+            const error = document.getElementById('secretError');
+            
+            if (input === SECRET_PASSWORD) {
+                playSound('success');
+                changeScreen('secretScreen', 'quizScreen');
+                startQuiz();
+            } else {
+                playSound('wrong');
+                error.style.display = 'block';
+                setTimeout(() => {
+                    error.style.display = 'none';
+                }, 2000);
+            }
+        }
+
+        // Quiz functionality
+        const quizQuestions = [
+            {
+                question: "Who's cuter?",
+                options: [
+                    { text: "You", response: "Look in the mirror! 🪞✨", type: "mirror" },
+                    { text: "Me", response: "Aww, you're sweet! 💕", type: "correct", correct: true },
+                    { text: "We're both adorable", response: "Noooo! 😱", type: "nope" }
+                ]
+            },
+            {
+                question: "Who has the better smile?",
+                options: [
+                    { text: "You (obviously)", response: "Look in the mirror! 🪞✨", type: "mirror" },
+                    { text: "Me (debatable)", response: "That's right! 😊", type: "correct", correct: true },
+                    { text: "Both of us could light up a room", response: "Noooo! 😱", type: "nope" }
+                ]
+            },
+            {
+                question: "Who's more likely to steal hearts?",
+                options: [
+                    { text: "You", response: "Look in the mirror! 🪞✨", type: "mirror" },
+                    { text: "Me", response: "You got it! 💖", type: "correct", correct: true },
+                    { text: "We're a dangerous duo together", response: "Noooo! 😱", type: "nope" }
+                ]
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function startQuiz() {
+            displayQuestion();
+        }
+
+        function displayQuestion() {
+            const question = quizQuestions[currentQuestion];
+            document.getElementById('questionCounter').textContent = `Question ${currentQuestion + 1} of 3`;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('quizOptions');
+            const responseMessage = document.getElementById('responseMessage');
+            optionsContainer.innerHTML = '';
+            responseMessage.className = 'response-message';
+            responseMessage.textContent = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.textContent = option.text;
+                optionDiv.onclick = () => handleAnswer(option, optionDiv);
+                optionsContainer.appendChild(optionDiv);
+            });
+        }
+
+        function handleAnswer(option, optionElement) {
+            // Disable all options
+            const allOptions = document.querySelectorAll('.option');
+            allOptions.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            const responseMessage = document.getElementById('responseMessage');
+            responseMessage.textContent = option.response;
+            responseMessage.className = `response-message ${option.type}`;
+            
+            // Show response message
+            setTimeout(() => {
+                responseMessage.classList.add('show');
+            }, 100);
+
+            // If correct answer, add animation to the option
+            if (option.correct) {
+                playSound('correct');
+                optionElement.classList.add('correct');
+                createHeartsBurst();
+                
+                // Move to next question after delay only if correct
+                setTimeout(() => {
+                    nextQuestion();
+                }, 2000);
+            } else {
+                playSound('wrong');
+                
+                // Re-enable options after showing wrong answer message
+                setTimeout(() => {
+                    allOptions.forEach(opt => {
+                        opt.style.pointerEvents = 'auto';
+                    });
+                    responseMessage.classList.remove('show');
+                    setTimeout(() => {
+                        responseMessage.textContent = '';
+                        responseMessage.className = 'response-message';
+                    }, 400);
+                }, 2000);
+            }
+        }
+
+        function createHeartsBurst() {
+            const burst = document.createElement('div');
+            burst.className = 'hearts-burst';
+            burst.style.left = '50%';
+            burst.style.top = '50%';
+            document.body.appendChild(burst);
+
+            const hearts = ['💕', '💖', '💗', '💝', '💞', '❤️'];
+            for (let i = 0; i < 12; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                
+                const angle = (i / 12) * Math.PI * 2;
+                const distance = 100 + Math.random() * 50;
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance;
+                
+                heart.style.setProperty('--tx', `${tx}px`);
+                heart.style.setProperty('--ty', `${ty}px`);
+                
+                burst.appendChild(heart);
+            }
+
+            setTimeout(() => {
+                burst.remove();
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < quizQuestions.length) {
+                displayQuestion();
+            } else {
+                changeScreen('quizScreen', 'ringHuntScreen');
+                initRingHunt();
+            }
+        }
+
+        // Ring Hunt Game
+        let ringsFound = 0;
+        const totalRings = 3;
+        let ringPositions = [];
+
+        function initRingHunt() {
+            const grid = document.getElementById('ringGrid');
+            grid.innerHTML = '';
+            ringsFound = 0;
+            
+            // Randomly select 3 positions for rings
+            ringPositions = [];
+            while (ringPositions.length < totalRings) {
+                const pos = Math.floor(Math.random() * 9);
+                if (!ringPositions.includes(pos)) {
+                    ringPositions.push(pos);
+                }
+            }
+            
+            // Create 9 boxes
+            for (let i = 0; i < 9; i++) {
+                const box = document.createElement('div');
+                box.className = 'box';
+                box.onclick = () => revealBox(box, i);
+                grid.appendChild(box);
+            }
+            
+            updateRingsFound();
+        }
+
+        function revealBox(box, index) {
+            if (box.classList.contains('revealed')) return;
+            
+            playSound('click');
+            box.classList.add('revealed');
+            
+            if (ringPositions.includes(index)) {
+                playSound('ring');
+                box.textContent = '💍';
+                ringsFound++;
+                updateRingsFound();
+                
+                if (ringsFound === totalRings) {
+                    setTimeout(() => {
+                        playSound('success');
+                        changeScreen('ringHuntScreen', 'valentineScreen');
+                    }, 1000);
+                }
+            } else {
+                box.textContent = '💔';
+            }
+        }
+
+        function updateRingsFound() {
+            document.getElementById('ringsFound').textContent = `Rings Found: ${ringsFound}/3`;
+        }
+
+        // Valentine Question
+        let noClickCount = 0;
+        let yesClickCount = 0;
+
+        function handleNo() {
+            noClickCount++;
+            playSound('click');
+            const noButton = document.getElementById('noButton');
+            
+            // Move the button randomly
+            const container = document.querySelector('.valentine-buttons');
+            const maxX = container.offsetWidth - noButton.offsetWidth - 40;
+            const maxY = container.offsetHeight;
+            
+            const randomX = Math.random() * maxX - maxX / 2;
+            const randomY = Math.random() * 50 - 25;
+            
+            noButton.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        function handleYes() {
+            yesClickCount++;
+            playSound('click');
+            
+            if (yesClickCount === 1) {
+                document.getElementById('valentineQuestion').textContent = "Are you really sure? 💕";
+            } else if (yesClickCount === 2) {
+                document.getElementById('valentineQuestion').textContent = "Like, REALLY really sure? 💖";
+            } else if (yesClickCount === 3) {
+                playSound('success');
+                changeScreen('valentineScreen', 'finalScreen');
+            }
+        }
+
+        // Screen navigation
+        function changeScreen(currentId, nextId) {
+            document.getElementById(currentId).classList.remove('active');
+            document.getElementById(nextId).classList.add('active');
+        }
+
+        // Allow Enter key for secret password
+        document.getElementById('secretInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkSecret();
+            }
+        });
+    </script>
+</body>
+</html>
