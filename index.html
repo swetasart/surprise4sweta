@@ -503,7 +503,7 @@
     <div class="container">
         <!-- Screen 1: Secret Password -->
         <div class="screen active" id="secretScreen">
-            <h1>💕 Secret Love 💕</h1>
+            <h1>💕 Unlock Surprise 💕</h1>
             <p>Enter the secret password to unlock something special...</p>
             <input type="password" id="secretInput" placeholder="What's the secret?">
             <p class="error-message" id="secretError">Oops! That's not quite right...</p>
@@ -541,10 +541,12 @@
         <div class="screen" id="finalScreen">
             <h1>🎉 Yay! 🎉</h1>
             <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" alt="Cute cats kissing" class="final-gif">
+            <h2>I knew it, meri Vitamin Ki Goli will say Yess ♥️!!!</h2>
             <p class="romantic-text">
-                "In a world full of chaos, you are my peace.<br>
-                In a life full of moments, you are my favorite.<br>
-                Happy Valentine's Day, my love! 💕"
+
+                "In a world full of chaos, you are my happiness.<br>
+                In a life full of moments, you are my absolute favorite person."<br>
+            
             </p>
         </div>
     </div>
@@ -641,7 +643,7 @@
         createFloatingHearts();
 
         // Secret password check
-        const SECRET_PASSWORD = "love"; // Change this to your desired password
+        const SECRET_PASSWORD = "password"; // Change this to your desired password
 
         function checkSecret() {
             const input = document.getElementById('secretInput').value.toLowerCase();
@@ -666,22 +668,22 @@
                 question: "Who's cuter?",
                 options: [
                     { text: "You", response: "Look in the mirror! 🪞✨", type: "mirror" },
-                    { text: "Me", response: "Aww, you're sweet! 💕", type: "correct", correct: true },
+                    { text: "Me", response: "Aww, you're right! 💕", type: "correct", correct: true },
                     { text: "We're both adorable", response: "Noooo! 😱", type: "nope" }
                 ]
             },
             {
                 question: "Who has the better smile?",
                 options: [
-                    { text: "You (obviously)", response: "Look in the mirror! 🪞✨", type: "mirror" },
-                    { text: "Me (debatable)", response: "That's right! 😊", type: "correct", correct: true },
+                    { text: "You (debatable)", response: "Look in the mirror! 🪞✨", type: "mirror" },
+                    { text: "Me (obviously)", response: "That's right! 😊", type: "correct", correct: true },
                     { text: "Both of us could light up a room", response: "Noooo! 😱", type: "nope" }
                 ]
             },
             {
                 question: "Who's more likely to steal hearts?",
                 options: [
-                    { text: "You", response: "Look in the mirror! 🪞✨", type: "mirror" },
+                    { text: "You", response: "Go see the cardiologist! 🪞✨", type: "mirror" },
                     { text: "Me", response: "You got it! 💖", type: "correct", correct: true },
                     { text: "We're a dangerous duo together", response: "Noooo! 😱", type: "nope" }
                 ]
